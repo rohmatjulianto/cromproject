@@ -1,0 +1,179 @@
+import React, {Component} from 'react';
+import {TextInput ,StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TouchableNativeFeedback} from 'react-native';
+import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
+
+export default class Register extends Component{
+    constructor(){
+        super();
+        this.state = {
+            HidePass : true,
+            HidePassAuth : true,
+
+            latlng : {
+                latitude : 37.78825,
+                longitude : -122.4324
+            },
+            region : {
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121
+            }
+            
+        }
+        
+    }
+
+    ShowHidePass = () => {
+        this.setState({HidePass : !this.state.HidePass});
+    }
+
+    ShowHidePassAuth = () => {
+        this.setState({HidePassAuth : !this.state.HidePassAuth});
+    }
+       
+    static navigationOptions ={
+        title : 'Daftar'
+    }
+
+    onRegionChange( region ) {
+    }
+    
+    
+    render(){
+        const {navigate} = this.props.navigation
+        return( 
+            <ScrollView>
+                <View style = {styles.container}>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Nama Warung</Text>
+                            <TextInput
+                                placeholder="Nama Warung"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                    </View>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Nama Pemilik</Text>
+                            <TextInput
+                                placeholder="Nama Pemilik"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                    </View>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Nomor Ponsel</Text>
+                            <TextInput
+                                placeholder="Nomor Ponsel"
+                                keyboardType = "phone-pad"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                    </View>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Kata Sandi</Text>
+                            <TextInput
+                                secureTextEntry = {this.state.HidePass}
+                                placeholder="Kata Sandi"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                            <TouchableOpacity
+                                onPress = {this.ShowHidePass}  
+                                style={{position: 'absolute', right: 1, padding : 15}}>
+                                <Image
+                                    style = {{height : 15, width : 20}}
+                                    source = { (this.state.HidePass) ? {uri : 'https://cromassets.000webhostapp.com/icon/hide.png'} : {uri:'https://cromassets.000webhostapp.com/icon/show.png' } }></Image>
+                            </TouchableOpacity>
+                    </View>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Konfirmasi Kata Sandi</Text>
+                            <TextInput
+                                secureTextEntry = {this.state.HidePassAuth}
+                                placeholder="Konfirmasi Kata Sandi"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                            <TouchableOpacity
+                                onPress = {this.ShowHidePassAuth}  
+                                style={{position: 'absolute', right: 1, padding : 15}}>
+                                <Image
+                                    style = {{height : 15, width : 20}}
+                                    source = { (this.state.HidePassAuth) ? {uri : 'https://cromassets.000webhostapp.com/icon/hide.png'} : {uri:'https://cromassets.000webhostapp.com/icon/show.png' } }></Image>
+                            </TouchableOpacity>
+                    </View>
+                    <View style = {styles.containerInput}>
+                        <Text style={styles.labelInput}>Alamat Lengkap</Text>
+                            <TextInput
+                                placeholder="Alamat"
+                                underlineColorAndroid="#25b2a9">
+                            </TextInput>
+                    </View>
+                    <View  style={styles.containerMaps}>
+                        <Text style={styles.labelMaps}>Pin Lokasimu</Text>
+                            <MapView
+                                style={styles.Maps}
+                                provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                                region={this.state.region}
+                                onRegionChange ={this.onRegionChange.bind(this)}>
+                                <Marker draggable
+                                    coordinate={this.state.latlng}
+                                    onDragEnd={this.onRegionChange.bind(this)}/>
+                            </MapView>
+                    </View>
+                    <View style={{paddingTop: 35, paddingBottom: 25}}>
+                        <TouchableNativeFeedback
+                            onPress={() => navigate('Activation')}>
+                            <View style={styles.btn}>
+                            <Text style={styles.btnText}>Submit</Text>
+                            </View>
+                        </TouchableNativeFeedback>
+                    </View>
+                </View>
+                   
+            </ScrollView> 
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent : 'center',
+        paddingTop: 10,
+        paddingRight : 15,
+        paddingLeft : 15,
+    },
+    containerInput:{
+       
+    },
+    labelInput:{
+        fontSize: 11,
+        top : 10
+    },
+    containerMaps :{
+        height: 150,
+        width: '100%',
+        marginBottom: 10
+    },
+    Maps : {
+        height: 150,
+        width: '100%',
+        marginBottom: 10
+       
+       
+    },
+    labelMaps:{
+        fontSize : 11,
+        top: 10,
+        paddingBottom: 20
+    },
+    btn :{
+        alignItems : 'center',
+        backgroundColor : '#25b2a9',
+        height: 50,
+        padding : 10,
+    },
+    
+    btnText : {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color : '#ffffff'
+    },
+
+
+})
